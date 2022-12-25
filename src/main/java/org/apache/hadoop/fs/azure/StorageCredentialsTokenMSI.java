@@ -64,9 +64,9 @@ public final class StorageCredentialsTokenMSI extends StorageCredentials impleme
     public StorageCredentialsTokenMSI(String accountName, String authEndpoint, String tenantGuid, String clientId, String authority) {
         this.accountName = accountName;
         this.authEndpoint = (authEndpoint==null || authEndpoint.trim().length()==0)?AuthConfigurations.DEFAULT_FS_AZURE_ACCOUNT_OAUTH_MSI_ENDPOINT:authEndpoint;
-        this.tenantGuid = tenantGuid;
+        this.tenantGuid = (tenantGuid==null || tenantGuid.trim().length()==0)?null:tenantGuid;
         this.authority = (authority==null || authority.trim().length()==0)?AuthConfigurations.DEFAULT_FS_AZURE_ACCOUNT_OAUTH_MSI_AUTHORITY:authority;
-        this.clientId = clientId;
+        this.clientId = (clientId==null || clientId.trim().length()==0)?null:clientId;
 
         if (!this.authority.endsWith(AbfsHttpConstants.FORWARD_SLASH)) {
             this.authority = this.authority + AbfsHttpConstants.FORWARD_SLASH;

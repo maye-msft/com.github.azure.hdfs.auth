@@ -53,7 +53,128 @@
 
     </dependencies>
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+
+            </plugins>
+        </pluginManagement>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies-hadoop-azure</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA</excludes>
+                            <includeArtifactIds>hadoop-azure</includeArtifactIds>
+                            <outputDirectory>${project.build.directory}/hadoop-azure-classes</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.4.0</version>
+                <executions>
+                    <execution>
+                        <id>unpack-dependencies-azure-storage</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>unpack-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <excludes>META-INF/*.SF,META-INF/*.DSA,META-INF/*.RSA</excludes>
+                            <includeArtifactIds>azure-storage</includeArtifactIds>
+                            <outputDirectory>${project.build.directory}/azure-storage-classes</outputDirectory>
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>copy-hadoop-azure</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/hadoop-azure-classes/org</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/classes/org</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy-azure-storage</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/azure-storage-classes/com/microsoft</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>${project.build.directory}/classes/com/microsoft</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version>
+                <executions>
+                    <execution>
+                        <id>create-azure-storage-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>sdk</classifier>
+                            <finalName>azure-storage-8.6.4-blob-oauth-${project.version}</finalName>
+                            <classesDirectory>${project.build.directory}/azure-storage-classes/</classesDirectory>
+                            <outputDirectory>bin</outputDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>create-hadoop-azure-jar</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                            <classifier>adfs</classifier>
+                            <finalName>hadoop-azure-3.3.2-blob-oauth-${project.version}</finalName>
+                            <classesDirectory>${project.build.directory}/hadoop-azure-classes/</classesDirectory>
+                            <outputDirectory>bin</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>exec-maven-plugin</artifactId>
@@ -73,8 +194,9 @@
                         <classpathFilenameExclusion>azure-storage-8.6.4.jar</classpathFilenameExclusion>
                     </classpathFilenameExclusions>
                     <additionalClasspathElements>
-                        <additionalClasspathElement>target/classes/</additionalClasspathElement>
-                        <additionalClasspathElement>${project.build.directory}/dependency/</additionalClasspathElement>
+                        <additionalClasspathElement>${project.build.directory}/classes/</additionalClasspathElement>
+                        <additionalClasspathElement>${project.build.directory}/hadoop-azure-classes/</additionalClasspathElement>
+                        <additionalClasspathElement>${project.build.directory}/azure-storage-classes/</additionalClasspathElement>
                     </additionalClasspathElements>
                 </configuration>
             </plugin>
