@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<project name="java-ant project" default="run">  
+    <target name="run" depends="compile">  
+        <java classname = "com.javatpoint.Hello">  
+            <classpath path="test"></classpath>  
+        </java>  
+    </target>  
+    <target name="compile">  
+        <javac includeantruntime="false" srcdir="./src" destdir = "test"></javac>  
+    </target>  
+</project>
