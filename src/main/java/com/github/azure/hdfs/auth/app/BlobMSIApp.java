@@ -14,9 +14,9 @@ public class BlobMSIApp {
         String uri = args[0];
         Configuration conf = new Configuration();
         conf.set("blob.azure.account.auth.type", "MSI");
-        conf.set("blob.azure.account.oauth2.msi.tenant", args[1]);
-        conf.set("blob.azure.account.oauth2.client.id",  args[2]);
-        conf.set("blob.azure.account.oauth2.msi.endpoint", args.length>3?args[3]:"");
+        // conf.set("blob.azure.account.oauth2.msi.tenant", args[1]);
+        // conf.set("blob.azure.account.oauth2.client.id",  args[2]);
+        // conf.set("blob.azure.account.oauth2.msi.endpoint", args.length>3?args[3]:"");
 
         FileSystem fs = FileSystem.get(URI.create(uri), conf);
         InputStream in = null;

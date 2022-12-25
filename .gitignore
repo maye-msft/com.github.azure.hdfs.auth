@@ -40,3 +40,4 @@ azure-storage-8.6.4-classes-del/
 hadoop-azure-3.3.2-classes-del/
 cmd.md
 *.pem
+.azure/.local_context_yem
